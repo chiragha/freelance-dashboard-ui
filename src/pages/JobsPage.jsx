@@ -1,10 +1,13 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { jobs } from "../data/jobs";
 import Navbar from "../components/Navbar";
+import ApplyForm from "../components/ApplyForm";
 
-import { Bookmark } from 'lucide-react';
+import { Bookmark } from "lucide-react";
 
 export default function JobsPage() {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedJob, setSelectedJob] = useState(null);
   const [jobType, setJobType] = useState([]);
   const [experience, setExperience] = useState([]);
   const [salary, setSalary] = useState(200000);
@@ -14,37 +17,37 @@ export default function JobsPage() {
 
   // ✅ Load bookmarks from localStorage
   useEffect(() => {
-  const saved = localStorage.getItem("bookmarks");
+    const saved = localStorage.getItem("bookmarks");
 
-  try {
-    const parsed = JSON.parse(saved);
+    try {
+      const parsed = JSON.parse(saved);
 
-    if (Array.isArray(parsed)) {
-      setBookmarks(parsed);
-    } else {
+      if (Array.isArray(parsed)) {
+        setBookmarks(parsed);
+      } else {
+        setBookmarks([]);
+      }
+    } catch (error) {
       setBookmarks([]);
     }
-  } catch (error) {
-    setBookmarks([]);
-  }
-}, []);
+  }, []);
 
   // ✅ Save bookmarks
-const toggleBookmark = (job) => {
-  let updated;
+  const toggleBookmark = (job) => {
+    let updated;
 
-  if (bookmarks.find((item) => item.id === job.id)) {
-    updated = bookmarks.filter((item) => item.id !== job.id);
-  } else {
-    updated = [...bookmarks, job];
-  }
+    if (bookmarks.find((item) => item.id === job.id)) {
+      updated = bookmarks.filter((item) => item.id !== job.id);
+    } else {
+      updated = [...bookmarks, job];
+    }
 
-  setBookmarks(updated);
-  localStorage.setItem("bookmarks", JSON.stringify(updated));
+    setBookmarks(updated);
+    localStorage.setItem("bookmarks", JSON.stringify(updated));
 
-  // ✅ FIX: trigger update AFTER saving
-  window.dispatchEvent(new Event("storage"));
-};
+    // ✅ FIX: trigger update AFTER saving
+    window.dispatchEvent(new Event("storage"));
+  };
 
   // FILTER LOGIC
   const filteredJobs = jobs
@@ -129,7 +132,7 @@ const toggleBookmark = (job) => {
             <div className="space-y-4">
               {filteredJobs.map((job) => {
                 const isBookmarked = bookmarks.some(
-                  (item) => item.id === job.id
+                  (item) => item.id === job.id,
                 );
 
                 return (
@@ -146,12 +149,8 @@ const toggleBookmark = (job) => {
                       />
 
                       <div>
-                        <h3 className="text-lg font-semibold">
-                          {job.title}
-                        </h3>
-                        <p className="text-sm text-gray-400">
-                          {job.company}
-                        </p>
+                        <h3 className="text-lg font-semibold">{job.title}</h3>
+                        <p className="text-sm text-gray-400">{job.company}</p>
                         <p className="text-xs text-gray-500">
                           {job.location} • {job.posted}
                         </p>
@@ -160,7 +159,6 @@ const toggleBookmark = (job) => {
 
                     {/* RIGHT */}
                     <div className="flex items-center gap-4">
-                      
                       {/* ✅ Bookmark Icon */}
                       <Bookmark
                         onClick={() => toggleBookmark(job)}
@@ -171,7 +169,13 @@ const toggleBookmark = (job) => {
                         }`}
                       />
 
-                      <button className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-500">
+                      <button
+                        onClick={() => {
+                          setSelectedJob(job);
+                          setShowModal(true);
+                        }}
+                        className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-500"
+                      >
                         Apply Now
                       </button>
                     </div>
@@ -180,9 +184,30 @@ const toggleBookmark = (job) => {
               })}
             </div>
           </div>
-
         </div>
       </div>
+      {showModal && (
+  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+    
+    {/* Modal Box */}
+    <div className="bg-white w-full max-w-md p-6 rounded-xl relative shadow-lg animate-fadeIn">
+
+      {/* Close Button */}
+      <button
+        onClick={() => setShowModal(false)}
+        className="absolute top-3 right-3 text-gray-500 hover:text-black text-lg"
+      >
+        ✕
+      </button>
+
+      {/* Pass job title + close function */}
+      <ApplyForm
+        jobTitle={selectedJob?.title}
+        closeModal={() => setShowModal(false)}
+      />
+    </div>
+  </div>
+)}
     </div>
   );
 }

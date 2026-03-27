@@ -57,40 +57,38 @@ export default function ApplyForm({ jobTitle, closeModal }) {
   };
 
   // ✅ Submit with Progress Simulation
-  
 
-    // Simulate upload progress
+  // Simulate upload progress
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!formData.name || !formData.email || !formData.file) {
-    setError("All fields required");
-    return;
-  }
-
-  setError("");
-  setLoading(true);
-  setProgress(0);
-
-  try {
-    const response = await submitApplication(formData, (prog) => {
-      setProgress(prog); // 👈 progress comes from API
-    });
-
-    if (response.success) {
-      setSuccess(true);
-
-      setTimeout(() => {
-        closeModal();
-      }, 2000);
+    if (!formData.name || !formData.email || !formData.file) {
+      setError("All fields required");
+      return;
     }
-  } catch (err) {
-    setError("Something went wrong");
-  } finally {
-    setLoading(false);
-  }
-};
-  
+
+    setError("");
+    setLoading(true);
+    setProgress(0);
+
+    try {
+      const response = await submitApplication(formData, (prog) => {
+        setProgress(prog); // 👈 progress comes from API
+      });
+
+      if (response.success) {
+        setSuccess(true);
+
+        setTimeout(() => {
+          closeModal();
+        }, 2000);
+      }
+    } catch (err) {
+      setError("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // ✅ Success UI
   if (success) {
@@ -105,17 +103,14 @@ export default function ApplyForm({ jobTitle, closeModal }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-
-      <h2 className="text-xl font-semibold">Apply Now</h2>
+      <h2 className="text-xl font-semibold">Apply for<span className="text-blue-500 font-sans font-semibold text-xl p-2">{jobTitle}</span></h2>
 
       {/* Name */}
       <input
         type="text"
         placeholder="First and Last Name"
         className="w-full border p-2 rounded"
-        onChange={(e) =>
-          setFormData({ ...formData, name: e.target.value })
-        }
+        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
       />
 
       {/* Email */}
@@ -123,9 +118,7 @@ export default function ApplyForm({ jobTitle, closeModal }) {
         type="email"
         placeholder="Email Address"
         className="w-full border p-2 rounded"
-        onChange={(e) =>
-          setFormData({ ...formData, email: e.target.value })
-        }
+        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
       />
 
       {/* ✅ Drag & Drop Area */}
@@ -154,9 +147,7 @@ export default function ApplyForm({ jobTitle, closeModal }) {
 
         {/* Show file name */}
         {formData.file && (
-          <p className="text-green-600 mt-2">
-            {formData.file.name}
-          </p>
+          <p className="text-green-600 mt-2">{formData.file.name}</p>
         )}
       </div>
 
