@@ -15,6 +15,9 @@ export default function JobsPage() {
 
   const [bookmarks, setBookmarks] = useState([]);
 
+  // hamburger for small devides for filter
+  const [showFilters, setShowFilters] = useState(false);
+
   // ✅ Load bookmarks from localStorage
   useEffect(() => {
     const saved = localStorage.getItem("bookmarks");
@@ -76,9 +79,41 @@ export default function JobsPage() {
     <div className="relative mt-12">
       <Navbar />
       <div className="bg-[#0B1120] text-white min-h-screen p-6">
+        <div className="md:hidden mb-4">
+          <button
+            onClick={() => setShowFilters(true)}
+            className="bg-blue-600 px-4 py-2 rounded"
+          >
+            ☰ Filters
+          </button>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* SIDEBAR */}
-          <div className="bg-[#111827] font-sans p-5 rounded-xl h-fit sticky top-16 z-10 shadow-2xl border-1 border-[#2f3d5c]">
+          {/* OVERLAY (mobile only) */}
+          {showFilters && (
+            <div
+              className="fixed inset-0 bg-black/50 z-40 md:hidden"
+              onClick={() => setShowFilters(false)}
+            />
+          )}
+
+          {/* SIDEBAR */}
+          <div
+            className={`
+    fixed md:static top-0 left-0 h-full md:h-auto w-64 md:w-auto
+    bg-[#111827] p-5 z-50 transform transition-transform duration-300
+    ${showFilters ? "translate-x-0" : "-translate-x-full"}
+    md:translate-x-0
+  `}
+          >
+            {/* Close button (mobile only) */}
+            <button
+              onClick={() => setShowFilters(false)}
+              className="md:hidden mb-4 text-right w-full text-white"
+            >
+              ✕ 
+            </button>
+
             <h2 className="font-semibold text-2xl mb-4">Filters</h2>
 
             {/* Job Type */}
@@ -99,7 +134,7 @@ export default function JobsPage() {
             <div className="mb-4">
               <p className="mb-2 text-md text-gray-400">Experience</p>
               {["Entry", "Intermediate", "Senior"].map((exp) => (
-                <label key={exp} className="block  text-md mt-2">
+                <label key={exp} className="block text-md mt-2">
                   <input
                     type="checkbox"
                     onChange={() =>
@@ -126,7 +161,6 @@ export default function JobsPage() {
               />
             </div>
           </div>
-
           {/* RIGHT SIDE */}
           <div className="md:col-span-3">
             <div className="space-y-4">
@@ -187,27 +221,25 @@ export default function JobsPage() {
         </div>
       </div>
       {showModal && (
-  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-    
-    {/* Modal Box */}
-    <div className="bg-white w-full max-w-md p-6 rounded-xl relative shadow-lg animate-fadeIn">
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          {/* Modal Box */}
+          <div className="bg-white w-full max-w-md p-6 rounded-xl relative shadow-lg animate-fadeIn">
+            {/* Close Button */}
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-black text-lg"
+            >
+              ✕
+            </button>
 
-      {/* Close Button */}
-      <button
-        onClick={() => setShowModal(false)}
-        className="absolute top-3 right-3 text-gray-500 hover:text-black text-lg"
-      >
-        ✕
-      </button>
-
-      {/* Pass job title + close function */}
-      <ApplyForm
-        jobTitle={selectedJob?.title}
-        closeModal={() => setShowModal(false)}
-      />
-    </div>
-  </div>
-)}
+            {/* Pass job title + close function */}
+            <ApplyForm
+              jobTitle={selectedJob?.title}
+              closeModal={() => setShowModal(false)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

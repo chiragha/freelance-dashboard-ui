@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useJobs } from "../context/JobContext";
+import Navbar from "../components/Navbar";
 
 export default function PostJob() {
   const { addJob } = useJobs();
@@ -35,6 +36,8 @@ export default function PostJob() {
   };
 
   return (
+   <>
+   <Navbar />
     <div className="max-w-6xl mx-auto px-4 py-10">
 
       {/* ✅ HEADER (separate) */}
@@ -141,5 +144,6 @@ export default function PostJob() {
         </form>
       </div>
     </div>
+   </>
   );
 }

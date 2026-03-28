@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Upload, X, ArrowUp } from "lucide-react";
+import Navbar from "../components/Navbar";
 
 const countries = ["India", "USA", "UK", "Canada", "Australia"];
 
@@ -59,6 +60,8 @@ export default function SettingsPage() {
   };
 
   return (
+ <>
+ <Navbar />
    <div className="bg-gray-50 min-h-screen px-4 sm:px-6 md:px-10 py-6 relative">
 
   <h1 className="text-2xl sm:text-3xl font-semibold text-blue-500 mb-6">
@@ -201,7 +204,7 @@ export default function SettingsPage() {
   </div>
 
   {/* SAVE BUTTON */}
-  <div className="sticky bottom-0 bg-white py-3 mt-6 border-t flex justify-center md:justify-end">
+  <div className="sticky bottom-0  py-3 mt-6  flex justify-center md:justify-end">
     <button className="w-full sm:w-auto bg-blue-600 text-white px-6 py-2 rounded-lg">
       Save Changes
     </button>
@@ -215,5 +218,6 @@ export default function SettingsPage() {
     <ArrowUp size={18} />
   </button>
 </div>
+ </>
   );
 }

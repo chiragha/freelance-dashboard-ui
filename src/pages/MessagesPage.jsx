@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Send, ArrowLeft } from "lucide-react";
+import Navbar from "../components/Navbar";
 
 export default function MessagesPage() {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -31,7 +32,9 @@ export default function MessagesPage() {
   const activeChat = chats.find((c) => c.id === selectedChat);
 
   return (
-    <div className="h-screen flex bg-[#fafafa]">
+   <>
+   <Navbar />
+    <div className="h-screen mt-14 flex bg-[#fafafa]">
 
       {/* ✅ CHAT LIST */}
       <div
@@ -149,5 +152,6 @@ export default function MessagesPage() {
         )}
       </div>
     </div>
+   </>
   );
 }

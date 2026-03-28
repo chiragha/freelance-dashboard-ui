@@ -25,63 +25,40 @@ function App() {
         <Route path="/jobs" element={<JobsPage />} />
         <Route path="/job/:id" element={<JobDetails />} />
         <Route path="/companies" element={<BrowseCompanies />} />
-        <Route
-          path="/post_job"
-          element={
-            <DashboardLayout>
-              <PostJob />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <DashboardLayout>
-              <Dashboard />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path="/message"
-          element={
-            <DashboardLayout>
-              <MessagesPage />
-            </DashboardLayout>
-          }
-        />
+        <Route path="/post_job" element={<PostJob />}/>
+         <Route path="/message" element={<MessagesPage />}/>
+
+
+        <Route path="/dashboard" element={<DashboardLayout />}>  
+          {/* Default dashboard page */}
+          <Route index element={<Dashboard />} />
+           
+        </Route>
+        <Route path="/bookmarks" element={<BookmarkPage />} />
+
+
+
+       
         <Route
           path="/review"
           element={
-            <DashboardLayout>
-              <ReviewsSection freelancerId={parseInt(id)} />
-            </DashboardLayout>
+              <ReviewsSection freelancerId={parseInt(id)} /> 
           }
         />
 
-        <Route
-          path="/bookmarks"
-          element={
-            <DashboardLayout>
-              <BookmarkPage />
-            </DashboardLayout>
-          }
-        />
+       
 
         <Route
           path="/settings"
           element={
-            <DashboardLayout>
               <SettingsPage />
-            </DashboardLayout>
           }
         />
 
         <Route
           path="/freelancer/:id"
           element={
-            <DashboardLayout>
               <FreelancerProfile />
-            </DashboardLayout>
           }
         />
       </Routes>

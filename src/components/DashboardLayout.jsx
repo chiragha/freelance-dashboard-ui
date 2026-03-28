@@ -1,22 +1,41 @@
 import Sidebar from "../components/Sidebar";
-import Navbar from "./Navbar";
+import { useState } from "react";
+import Navbar from "../components/Navbar";
+import { Outlet } from "react-router-dom";
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout() {
+  const [openSidebar, setOpenSidebar] = useState(false);
+
   return (
-   <>
-   <Navbar />
-    <div className="flex min-h-screen">
+    <div className="flex h-screen bg-[#0B1120]">
 
-      {/* LEFT SIDE - SIDEBAR */}
-      <div className="fixed top-0 left-0 w-64 bg-gray-900 text-white h-screen">
-        <Sidebar />
+      {/* Sidebar */}
+      <div className="hidden md:block w-64">
+        <Sidebar openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
       </div>
 
-      {/* RIGHT SIDE - MAIN CONTENT */}
-      <div className="ml-64 mt-16 p-6 flex-1 bg-gray-100 min-h-screen overflow-y-auto">
-        {children}
+      {/* Right Side */}
+      <div className="flex-1 flex flex-col">
+
+        {/* Navbar */}
+        <Navbar setOpenSidebar={setOpenSidebar} />
+
+        {/* Content */}
+        <div className="flex-1 p-4 overflow-y-auto">
+          <Outlet />
+        </div>
       </div>
 
-    </div></>
+      {/* Mobile Sidebar (overlay only on mobile) */}
+      {openSidebar && (
+        <div className="fixed inset-0 z-50 md:hidden flex">
+          <Sidebar openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
+          <div
+            className="flex-1 bg-black/50"
+            onClick={() => setOpenSidebar(false)}
+          />
+        </div>
+      )}
+    </div>
   );
 }

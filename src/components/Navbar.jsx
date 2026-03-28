@@ -54,7 +54,7 @@ export default function Navbar() {
     <>
     <nav
       ref={dropdownRef}
-      className="fixed top-0 left-0 w-full shadow bg-white z-50"
+      className="fixed top-0 left-0 w-full shadow bg-white z-40"
     >
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo */}
@@ -145,8 +145,8 @@ export default function Navbar() {
                 >
                   Messages
                 </Link>
-                <Link
-                  to="/bookmarks"
+
+                <Link to="/bookmarks"
                   className="block px-4 py-2 hover:bg-gray-100"
                 >
                   Bookmarks
